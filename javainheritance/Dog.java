@@ -44,7 +44,10 @@ public class Dog extends Animal{
     {
         super.move(speed);
         System.out.println("Dog is moving at " + speed);
-        
+        if(name.equals("wolf"))
+        {
+            System.out.println("Dog is moving at " + speed);
+        }
         this.run();
         this.walk();
     }

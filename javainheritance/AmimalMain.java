@@ -9,6 +9,8 @@ public class AmimalMain {
         animalDoingStuff(dog1, "fast");
         Dog dog2 = new Dog("Labrador", "Large", 30);
         animalDoingStuff(dog2, "slow");
+        Dog wolf =new Dog("wolf", "Large", 60);
+        animalDoingStuff(wolf, "fast");
     }
     public static void animalDoingStuff(Animal animal, String speed)
     {

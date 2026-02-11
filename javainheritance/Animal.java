@@ -1,5 +1,5 @@
 class Animal{
-    private String name;
+    protected  String name;
     private String size;
     private double weight;
     public Animal() {
