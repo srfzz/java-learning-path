@@ -40,7 +40,27 @@ class Cat extends Animal {
     }
 }
 ```
+## The `extends` Keyword
 
+The `extends` keyword in Java is used to establish an inheritance relationship between a child class and a parent class.
+
+**Syntax:**
+```java
+class ChildClass extends ParentClass {
+    // Child class code
+}
+```
+
+**How it works:**
+- The child class inherits all non-private fields and methods from the parent class
+- `Dog extends Animal` means "Dog is a type of Animal"
+- A class can extend only one parent class (single inheritance)
+- The child class can add new methods, override parent methods, or add new fields
+
+**Key points:**
+- Use `extends` to create a parent-child relationship
+- The child class gets access to all public and protected members of the parent
+- This is the foundation of inheritance in Java
 **Without inheritance**: You'd duplicate `eat()` and `sleep()` in both `Dog` and `Cat`. **With inheritance**: Both classes automatically have these methods, reducing code duplication and making updates easier.
 
 ## Benefits in Practice
