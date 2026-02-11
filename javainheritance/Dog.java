@@ -37,6 +37,7 @@ public class Dog extends Animal{
     {
         super.makeNoise();
         System.out.println("Woof");
+        this.bark();
     }
     @Override
     public void move(String speed)
@@ -44,6 +45,20 @@ public class Dog extends Animal{
         super.move(speed);
         System.out.println("Dog is moving at " + speed);
         
+        this.run();
+        this.walk();
+    }
+    private void bark()
+    {
+        System.out.println("dog barks Woof");
+    }
+    private void run()
+    {
+        System.out.println("dog is running");
+    }
+    private void walk()
+    {
+        System.out.println("dog is walking");
     }
     
     
