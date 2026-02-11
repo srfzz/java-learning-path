@@ -11,7 +11,7 @@ Inheritance allows me to create a new class based on an existing class. I can ex
 - I get access to all public and protected members of the parent class
 
 ## Example: Animal and Dog
-
+    
 ```java
 // Parent class
 class Animal {
