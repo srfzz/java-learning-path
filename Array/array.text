@@ -1,0 +1,13 @@
+what is an array ?
+An array is data structure that allows to hold sequence of values of same  type ,
+we can have arrays for any primitive data types like char int long float double  ll th eaight primitive data types
+elements in an array hav value and index and index alway begings with 0 
+to acces and array we use  arrayName[index];
+how to initialze and array :
+int[] IntegerArray=new int[10] //this ine one way to ceate an array;
+int[] numbers =new int[5]
+String[] names =new String[3]
+
+//sing array literals
+int[] num={1,4,6,7};
+String[] platforms={"youtube","github","abc","def"}
