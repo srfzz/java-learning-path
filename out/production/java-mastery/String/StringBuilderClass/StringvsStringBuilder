@@ -1,0 +1,254 @@
+/**
+ * STRING vs STRINGBUILDER - Complete Guide
+ * 
+ * This document explains the differences between String and StringBuilder,
+ * when to use each, and provides detailed examples.
+ */
+
+// ============================================================================
+// 1. STRING CLASS
+// ============================================================================
+/*
+ * DESCRIPTION:
+ * - Immutable: Once created, a String cannot be changed
+ * - Thread-safe: Safe to use in multi-threaded environments
+ * - Stored in String Pool: Memory efficient for duplicate values
+ * - Part of java.lang package (imported by default)
+ * 
+ * WHY IT WAS USED:
+ * - Simplicity and safety in single-threaded applications
+ * - Memory optimization through String interning
+ * - Thread safety without synchronization overhead
+ */
+
+public class StringExample {
+    public static void main(String[] args) {
+        // Example 1: Basic String creation
+        String str1 = "Hello";
+        String str2 = "World";
+        String str3 = str1 + " " + str2; // Creates new String objects
+        
+        System.out.println(str3); // Output: Hello World
+        
+        // Example 2: Memory in String Pool
+        String s1 = "Java";
+        String s2 = "Java"; // Points to same memory location
+        System.out.println(s1 == s2); // true (same reference)
+        
+        // Example 3: Concatenation performance issue
+        String result = "";
+        for (int i = 0; i < 1000; i++) {
+            result += "Item" + i + " "; // Creates 1000 String objects!
+        }
+    }
+}
+
+// ============================================================================
+// 2. STRINGBUILDER CLASS
+// ============================================================================
+/*
+ * DESCRIPTION:
+ * - Mutable: Can be modified after creation
+ * - NOT thread-safe: Use only in single-threaded context
+ * - NOT stored in String Pool: Each object is unique
+ * - More memory efficient for multiple modifications
+ * - Part of java.lang package
+ * 
+ * WHY IT WAS CREATED:
+ * - String immutability causes performance issues in loops
+ * - Needed efficient string concatenation
+ * - Replaces StringBuffer for non-threaded applications
+ */
+
+public class StringBuilderExample {
+    public static void main(String[] args) {
+        // Example 1: Basic StringBuilder usage
+        StringBuilder sb = new StringBuilder();
+        sb.append("Hello");
+        sb.append(" ");
+        sb.append("World");
+        System.out.println(sb.toString()); // Output: Hello World
+        
+        // Example 2: Efficient loop concatenation
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < 1000; i++) {
+            result.append("Item").append(i).append(" ");
+        }
+        String finalString = result.toString();
+        
+        // Example 3: Performance advantage
+        long startTime = System.currentTimeMillis();
+        StringBuilder perf = new StringBuilder();
+        for (int i = 0; i < 100000; i++) {
+            perf.append(i);
+        }
+        long endTime = System.currentTimeMillis();
+        System.out.println("Time: " + (endTime - startTime) + "ms");
+    }
+}
+
+// ============================================================================
+// 3. WHEN TO USE STRING
+// ============================================================================
+/*
+ * USE CASES:
+ * 1. Constant values that won't change
+ * 2. String literals and fixed messages
+ * 3. Thread-safe scenarios without modification
+ * 4. Single or few string concatenations
+ * 5. When memory pool optimization is beneficial
+ * 6. Passing data between methods
+ */
+
+public class StringUseCase {
+    // ✓ USE STRING HERE
+    private static final String APP_NAME = "MyApplication";
+    private static final String DATABASE_URL = "jdbc:mysql://localhost:3306/mydb";
+    
+    public void processUserName(String firstName, String lastName) {
+        // Few concatenations - acceptable
+        String fullName = firstName + " " + lastName;
+        System.out.println("Welcome, " + fullName);
+    }
+    
+    public String getUserGreeting() {
+        // Return constant greeting
+        return "Hello, thank you for using " + APP_NAME;
+    }
+}
+
+// ============================================================================
+// 4. WHEN TO USE STRINGBUILDER
+// ============================================================================
+/*
+ * USE CASES:
+ * 1. Building strings in loops
+ * 2. Multiple consecutive concatenations
+ * 3. Generating SQL queries dynamically
+ * 4. Building JSON/XML strings
+ * 5. Single-threaded performance-critical code
+ * 6. When you need modify/insert/delete operations
+ */
+
+public class StringBuilderUseCase {
+    // ✓ USE STRINGBUILDER HERE
+    
+    // Example 1: Building CSV data
+    public String buildCsvLine(String[] data) {
+        StringBuilder csv = new StringBuilder();
+        for (int i = 0; i < data.length; i++) {
+            if (i > 0) csv.append(",");
+            csv.append("\"").append(data[i]).append("\"");
+        }
+        return csv.toString();
+    }
+    
+    // Example 2: Generating SQL query
+    public String buildQuery(String tableName, String[] columns) {
+        StringBuilder query = new StringBuilder("SELECT ");
+        for (int i = 0; i < columns.length; i++) {
+            if (i > 0) query.append(", ");
+            query.append(columns[i]);
+        }
+        query.append(" FROM ").append(tableName);
+        return query.toString();
+    }
+    
+    // Example 3: Building JSON
+    public String buildJsonResponse(String key1, String value1, String key2, String value2) {
+        StringBuilder json = new StringBuilder("{");
+        json.append("\"").append(key1).append("\":\"").append(value1).append("\",");
+        json.append("\"").append(key2).append("\":\"").append(value2).append("\"");
+        json.append("}");
+        return json.toString();
+    }
+}
+
+// ============================================================================
+// 5. WHEN NOT TO USE
+// ============================================================================
+/*
+ * DON'T USE STRING FOR:
+ * - Repeated concatenations in loops
+ * - Building large strings dynamically
+ * - Performance-sensitive code
+ * 
+ * DON'T USE STRINGBUILDER FOR:
+ * - Multi-threaded environments (use StringBuffer instead)
+ * - Constant/immutable data
+ * - When you need thread safety
+ * - Storing in collections that may be shared across threads
+ */
+
+// ============================================================================
+// 6. PERFORMANCE COMPARISON
+// ============================================================================
+
+public class PerformanceComparison {
+    public static void main(String[] args) {
+        // WRONG WAY - Using String
+        long start1 = System.nanoTime();
+        String result1 = "";
+        for (int i = 0; i < 10000; i++) {
+            result1 += i; // ✗ Creates 10000 String objects
+        }
+        long time1 = System.nanoTime() - start1;
+        
+        // RIGHT WAY - Using StringBuilder
+        long start2 = System.nanoTime();
+        StringBuilder result2 = new StringBuilder();
+        for (int i = 0; i < 10000; i++) {
+            result2.append(i); // ✓ Creates 1 StringBuilder object
+        }
+        long time2 = System.nanoTime() - start2;
+        
+        System.out.println("String time: " + time1 + "ns");
+        System.out.println("StringBuilder time: " + time2 + "ns");
+        System.out.println("StringBuilder is " + (time1 / time2) + "x faster");
+    }
+}
+
+// ============================================================================
+// 7. KEY METHODS
+// ============================================================================
+
+public class KeyMethods {
+    public static void main(String[] args) {
+        // STRING METHODS
+        String str = "Hello";
+        str.length();           // Get length
+        str.charAt(0);          // Get character at index
+        str.substring(0, 3);    // Extract substring
+        str.toUpperCase();      // Convert to uppercase
+        str.toLowerCase();      // Convert to lowercase
+        str.equals("Hello");    // Compare strings
+        str.indexOf("l");       // Find character index
+        str.replace("l", "L");  // Replace characters
+        
+        // STRINGBUILDER METHODS
+        StringBuilder sb = new StringBuilder("Hello");
+        sb.append(" World");        // Add at end
+        sb.insert(5, " Beautiful"); // Insert at position
+        sb.delete(5, 6);            // Delete characters
+        sb.replace(0, 5, "Hi");     // Replace range
+        sb.reverse();               // Reverse string
+        sb.length();                // Get length
+        sb.toString();              // Convert to String
+    }
+}
+
+// ============================================================================
+// 8. SUMMARY TABLE
+// ============================================================================
+/*
+ * ┌─────────────────────────────────────────────────────────┐
+ * │ FEATURE          │ STRING      │ STRINGBUILDER           │
+ * ├──────────────────┼─────────────┼─────────────────────────┤
+ * │ Immutable        │ Yes         │ No (Mutable)            │
+ * │ Thread-Safe      │ Yes         │ No                      │
+ * │ Performance      │ Slow (loops)│ Fast                    │
+ * │ Memory           │ Pooled      │ Individual objects      │
+ * │ Use Case         │ Constants   │ Loop concatenation      │
+ * │ Synchronization  │ Built-in    │ None needed             │
+ * └──────────────────┴─────────────┴─────────────────────────┘
+ */

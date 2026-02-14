@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry excluding="javainheritance/|java_records/|java_records/record/" kind="src" path=""/>
+	<classpathentry excluding="record/" kind="src" path="java_records"/>
+	<classpathentry kind="src" path="java_records/record"/>
+	<classpathentry kind="src" path="javainheritance"/>
+	<classpathentry kind="output" path="out/production/java-mastery"/>
+</classpath>
